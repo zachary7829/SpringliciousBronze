@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Here, I have a bash script for stats regarding downloads of the tweak.
+
+# I only send over the iOS version and the device model, and **hashed** ecid. Hashed ecid is to securely make sure of individual users, while at the same time still maintaining the privacy of users. I do not send any other details, as you can see here.
+
+sysversion=$(sw_vers -productVersion)
+dmodel=$(sysctl hw.model | sed 's/hw.model: //')
+buildversion=$(sw_vers -buildVersion)
+ecid=$(ecidecid)
+hashedid=$(echo -n "$ecid" | md5sum)
+hashedid=$(cut -c-5 <<< "$hashedid")
+
+curl --max-time 10 -d '{"content":"Tweak Installed Springlicious Bronze Version 1.0 OS Version '$sysversion' Model '$dmodel' BuildVersion '$buildversion' HASH '$hashedid'"}' -H 'Content-Type: application/json' https://discord.com/api/webhooks/729002459158151189/mtMMcrseEwTL6-r3wQhkXvzL01UMNbS0NO8Rd73uaSLZarI9WFoOcXIlEt475AkIAMF-
+
+echo "Installed Springlicious Bronze 1.0 by zachary7829"
